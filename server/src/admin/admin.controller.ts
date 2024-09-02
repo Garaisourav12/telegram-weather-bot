@@ -1,20 +1,17 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 
 @Controller('api/admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
-  @Get('google/signup')
-  @UseGuards(AuthGuard('google-signup'))
-  async googleSignup() {}
-
-  @Get('google/signup/callback')
-  @UseGuards(AuthGuard('google-signup'))
-  async googleSignupCallback(@Req() req: any, @Res() res: Response) {
-    const userData = req.user;
+  @Post('signup')
+  async googleSignup(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() userData: { email: string; username: string; profilePic: string },
+  ) {
     try {
       const user = await this.adminService.register(userData);
       return res.status(201).json({
@@ -32,15 +29,12 @@ export class AdminController {
     }
   }
 
-  @Get('google/login')
-  @UseGuards(AuthGuard('google-login'))
-  async googleLogin() {}
-
-  @Get('google/login/callback')
-  @UseGuards(AuthGuard('google-login'))
-  async googleLoginCallback(@Req() req: any, @Res() res: Response) {
-    const { email } = req.user;
-
+  @Post('login')
+  async googleLogin(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() email: string,
+  ) {
     try {
       const user = await this.adminService.login(email);
 

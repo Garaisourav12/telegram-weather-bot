@@ -5,16 +5,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 import { AuthMiddleware } from 'src/common/middlewares/auth.middleware';
 import { Admin, AdminSchema } from './schema/admin.schema';
-import { GoogleSignupStrategy } from './signup.strategy';
-import { GoogleLoginStrategy } from './login.strategy';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Admin.name, schema: AdminSchema }]),
-    PassportModule.register({ session: true }),
   ],
   controllers: [AdminController],
-  providers: [AdminService, GoogleSignupStrategy, GoogleLoginStrategy],
+  providers: [AdminService],
   exports: [AdminService],
 })
 export class AdminModule {
