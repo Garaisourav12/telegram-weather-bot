@@ -156,7 +156,6 @@ export class TelegramService {
 
       const cityUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${process.env.API_KEY}`;
       const searchCity = await axios.get(cityUrl);
-      console.log(searchCity.data[0].name.toLowerCase(), city.toLowerCase());
 
       if (searchCity.data[0].name.toLowerCase() !== city.toLowerCase()) {
         this.bot.sendMessage(chatId, 'Enter a valid city!');

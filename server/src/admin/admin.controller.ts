@@ -47,7 +47,7 @@ export class AdminController {
       // Generate Token
       const token = await this.adminService.generateToken({ ...user });
 
-      res
+      return res
         .status(200)
         .cookie('token', token, {
           maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -61,7 +61,6 @@ export class AdminController {
           data: user,
           message: 'Login successful!',
         });
-      console.log('Set-Cookie Header:', res.getHeaders()['set-cookie']);
     } catch (err) {
       return res.status(err.getStatus?.() || 500).json({
         success: false,
