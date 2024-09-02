@@ -11,7 +11,7 @@ export class GoogleLoginStrategy extends PassportStrategy(
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `${process.env.BASE_URL}/api/admin/google/login/callback`,
+      callbackURL: `https://telegram-weather-bot-tasg.onrender.com/api/admin/google/login/callback`,
       scope: ['email', 'profile'],
     });
   }
