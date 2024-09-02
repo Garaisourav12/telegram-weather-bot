@@ -33,8 +33,10 @@ export class AdminController {
   async googleLogin(
     @Req() req: Request,
     @Res() res: Response,
-    @Body() email: string,
+    @Body() userData: { email: string },
   ) {
+    const { email } = userData;
+
     try {
       const user = await this.adminService.login(email);
 
