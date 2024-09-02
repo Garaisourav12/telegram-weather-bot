@@ -111,7 +111,7 @@ export class TelegramService {
         await this.userService.subscribeUser(chatId);
         this.bot.sendMessage(
           chatId,
-          'You have successfully subscribed for daily weather updates!',
+          'You have successfully subscribed!\nAnd you will receive daily weather updates for your city at 8:00am.',
         );
       }
     } catch (err) {
@@ -172,7 +172,7 @@ export class TelegramService {
       });
       this.bot.sendMessage(
         chatId,
-        'You have successfully subscribed for daily weather updates!',
+        'You have successfully subscribed!\nAnd you will receive daily weather updates for your city at 8:00am.',
       );
     });
   }
