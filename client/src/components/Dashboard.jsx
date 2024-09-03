@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import fetchApi from "../../api";
 import BotUser from "./BotUser";
 import WebShare from "./WebShare";
+import { toast } from "react-toastify";
 
 function Dashboard() {
 	const navigate = useNavigate();
@@ -39,11 +40,13 @@ function Dashboard() {
 	const handleSignout = async () => {
 		try {
 			setSiginingOut(true);
-			await fetchApi("/admin/logout");
+			const { data } = await fetchApi("/admin/logout");
 			setAdmin(null);
 			navigate("/");
+			toast.success(data.message);
 		} catch (err) {
-			console.log(err);
+			// console.log(err);
+			toast.error(err.response.data.error);
 		} finally {
 			setSiginingOut(false);
 		}

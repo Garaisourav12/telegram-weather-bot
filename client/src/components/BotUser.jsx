@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import fetchApi from "../../api";
+import { toast } from "react-toastify";
 
 function BotUser({ botUser, setBotUsers }) {
 	const { _id, name, isSubscribed, isBlocked } = botUser;
@@ -9,15 +10,16 @@ function BotUser({ botUser, setBotUsers }) {
 	const blockUser = async (id) => {
 		try {
 			setBlocking(true);
-			await fetchApi(`/user/block/${id}`);
+			const { data } = await fetchApi(`/user/block/${id}`);
 			setBotUsers((prev) =>
 				prev.map((user) => {
 					if (user._id === id) return { ...user, isBlocked: true };
 					return user;
 				})
 			);
+			toast.success(`You have blocked ${data.data.name}!`);
 		} catch (err) {
-			console.log(err);
+			toast.error(err.response.data.error);
 		} finally {
 			setBlocking(false);
 		}
@@ -26,15 +28,16 @@ function BotUser({ botUser, setBotUsers }) {
 	const unblockUser = async (id) => {
 		try {
 			setBlocking(true);
-			await fetchApi(`/user/unblock/${id}`);
+			const { data } = await fetchApi(`/user/unblock/${id}`);
 			setBotUsers((prev) =>
 				prev.map((user) => {
 					if (user._id === id) return { ...user, isBlocked: false };
 					return user;
 				})
 			);
+			toast.success(`You have unblocked ${data.data.name}!`);
 		} catch (err) {
-			console.log(err);
+			toast.error(err.response.data.error);
 		} finally {
 			setBlocking(false);
 		}
@@ -43,10 +46,11 @@ function BotUser({ botUser, setBotUsers }) {
 	const deleteUser = async (id) => {
 		try {
 			setDeleteing(true);
-			await fetchApi(`/user/delete/${id}`);
+			const { data } = await fetchApi(`/user/delete/${id}`);
 			setBotUsers((prev) => prev.filter((user) => user._id !== id));
+			toast.success(`You have deleted the account of ${data.data.name}!`);
 		} catch (err) {
-			console.log(err);
+			toast.error(err.response.data.error);
 		} finally {
 			setDeleteing(false);
 		}
