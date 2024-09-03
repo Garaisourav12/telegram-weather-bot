@@ -1,11 +1,13 @@
 // GoogleAuthentication.js
 import React from "react";
 import { toast } from "react-toastify";
-import { fetchApi } from "../../api";
+import fetchApi from "../../api";
 import { auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 function GoogleAuthentication() {
+    const navigate = useNavigate();
     const [signingUp, setSigningUp] = React.useState(false);
     const [signingIn, setSigningIn] = React.useState(false);
 
@@ -14,16 +16,25 @@ function GoogleAuthentication() {
 		// Your API call for sign-up
         try{
             setSigningUp(true);
+
             const {user} = await signInWithPopup(auth, provider);
-            console.log(user);
+
+            // If popup is closed, user will be null
+            if(!user) {
+                setSigningUp(false);
+                return;
+            }
             
+            const {data} = await fetchApi("/admin/signup", 'post', {
+                email: user.email,
+                username: user.displayName,
+                profilePic: user.photoURL
+            })
+
             // Toast success
-            toast.success("Signed up successfully!");
+            toast.success(data.message);
         }catch(error){
-            // Toast error
-            console.log(error);
-            
-            toast.error("Something went wrong!");
+            toast.error(error?.response?.data?.error || 'Internal server error!');
         }finally{
             setSigningUp(false);
         }
@@ -33,12 +44,27 @@ function GoogleAuthentication() {
         // Your API call for sign-in
         try{
             setSigningIn(true);
-            const {data} = await signInWithPopup(auth, provider);
+
+            const {user} = await signInWithPopup(auth, provider);
+
+            // If popup is closed, user will be null
+            if(!user) {
+                setSigningIn(false);
+                return;
+            }
+            
+            const {data} = await fetchApi("/admin/login", 'post', {
+                email: user.email
+            })
+
+            // Redirect to dashboard
+            navigate('/dashboard');
+
             // Toast success
-            toast.success("Signed in successfully!");
+            toast.success(data.message);
         }catch(error){
             // Toast error
-            toast.error("Something went wrong!");
+            toast.error(error?.response?.data?.error || 'Internal server error!');
         }finally{
             setSigningIn(false);
         }

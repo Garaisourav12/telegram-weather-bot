@@ -1,15 +1,13 @@
-import React from 'react';
+import React from "react";
 
 function Header() {
-  return (
-    <nav className="bg-blue-400 shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-center items-center h-20">
-          <h1 className="text-3xl font-bold text-white tracking-wide">Telegram Weather Bot</h1>
-        </div>
-      </div>
-    </nav>
-  );
+	return (
+		<nav className="bg-blue-400 shadow-md p-3 md:p-4">
+			<h1 className="text-center text-2xl md:text-3xl font-bold text-white tracking-wide">
+				Telegram Weather Bot
+			</h1>
+		</nav>
+	);
 }
 
 export default Header;

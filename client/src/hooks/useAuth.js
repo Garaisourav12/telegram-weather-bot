@@ -1,20 +1,27 @@
-import { useEffect } from "react";
-import { fetchApi } from "../../api";
+import { useEffect, useState } from "react";
+import fetchApi from "../../api";
 
-export const useAuth = async () => {
-	const [user, setUser] = useState(null);
+const useAuth = () => {
+	const [auth, setAuth] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
-	useEffect(async () => {
+	const getProfile = async () => {
 		try {
-			const { data } = await fetchApi("/admin/profile");
-			setUser(data);
+			const response = await fetchApi("/admin/profile");
+			setAuth(response.data.data);
 		} catch (err) {
-			setError(err.message);
+			setError(err);
 		} finally {
 			setLoading(false);
 		}
-	});
-	return { user, loading, error };
+	};
+
+	useEffect(() => {
+		getProfile();
+	}, []);
+
+	return { auth, loading, error };
 };
+
+export default useAuth;
