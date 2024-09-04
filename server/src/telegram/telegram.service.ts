@@ -25,8 +25,8 @@ export class TelegramService {
   }
 
   initateDailyWeatherUpdate() {
-    // daily at 8:00am
-    const cronExpression = '00 8 * * *';
+    // daily at 12:05 am
+    const cronExpression = '5 0 * * *';
 
     // For a single city weather will be fetched for one time only
     let cityWeatherConfig = {};
