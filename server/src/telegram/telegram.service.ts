@@ -25,8 +25,8 @@ export class TelegramService {
   }
 
   initateDailyWeatherUpdate() {
-    // daily at 12:05 am
-    const cronExpression = '5 0 * * *';
+    // daily at 12:05 pm
+    const cronExpression = '5 12 * * *';
 
     // For a single city weather will be fetched for one time only
     let cityWeatherConfig = {};
@@ -171,7 +171,7 @@ export class TelegramService {
       });
       this.bot.sendMessage(
         chatId,
-        'You have successfully subscribed!\nAnd you will receive daily weather updates for your city at 8:00am.',
+        'You have successfully subscribed!\nAnd you will receive daily weather updates for your city at 12:05pm.',
       );
     });
   }
